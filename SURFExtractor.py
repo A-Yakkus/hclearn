@@ -8,7 +8,7 @@ import re
 import makeMaze as mm
 
 #rootFolder = "/Users/alansaul/Work/CompSci/SURE/hclearn_alan/"
-rootFolder = "/home/charles/git/hclearn/"
+rootFolder = os.getcwd()+"/"   # "/home/charles/git/hclearn/"
 
 #This is the folder being used by makeSURFRepresentation to create the surf features for learnWeights
 prefixFolder = rootFolder + "DCSCourtyard/"

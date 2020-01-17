@@ -191,7 +191,7 @@ plotErrors	gui.py	/^def plotErrors(hist1, hist2, hist3, lost1, lost2, lost3, lea
 plotPlaceCells	plotPlaceCells.py	/^def plotPlaceCells(hist, iCell, gridDict):$/;"	f
 plotResults	gui.py	/^def plotResults(path, hist, dictGrids, b_useNewDG, learningRate, note=""):$/;"	f
 prefixFolder	SURFExtractor.py	/^prefixFolder = rootFolder + "DCSCourtyard\/"$/;"	v
-rootFolder	SURFExtractor.py	/^rootFolder = "\/home\/charles\/git\/hclearn\/"$/;"	v
+rootFolder	SURFExtractor.py	/^rootFolder = os.getcwd()+"\/"   # "\/home\/charles\/git\/hclearn\/"$/;"	v
 sanitiseTheta	cffun.py	/^def sanitiseTheta(th):$/;"	f
 senses	test.py	/^senses=np.load('senses.npy')$/;"	v
 setCA3CA1Weights	DGStateAlan.py	/^    def setCA3CA1Weights(self, CA3CA1weights):$/;"	m	class:DGHelper
