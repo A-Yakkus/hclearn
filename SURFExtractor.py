@@ -6,6 +6,7 @@ import pyflann as flann
 import unittest
 import re
 import makeMaze as mm
+import pdb
 
 #rootFolder = "/Users/alansaul/Work/CompSci/SURE/hclearn_alan/"
 rootFolder = os.getcwd()+"/"   # "/home/charles/git/hclearn/"
@@ -381,8 +382,10 @@ def extractSURFFeatures(image,draw, N=7):
     surf = cv2.xfeatures2d.SURF_create(400)
     (keypoints, descriptors)= surf.detectAndCompute(image,None)
 
+    #pdb.set_trace()
+
     #Want to take the X best ones
-    sortedDescriptorListPairs = [descriptor for keypoint, descriptor in sorted(zip(keypoints, descriptors), key=(lambda (keypoint, descriptors): keypoint[4]), reverse = True) ]
+    sortedDescriptorListPairs = [descriptor for keypoint, descriptor in sorted(zip(keypoints, descriptors), key=(lambda (keypoint, descriptors): keypoint.size), reverse = True) ]
     #np.array(sortedDescriptorListPairs[0:N])
     #print("Num of keypoints: %d  Num of descriptors: %d " % (len(keypoints), len(descriptors)))
     if draw:
