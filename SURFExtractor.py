@@ -374,7 +374,12 @@ def compareDicts(dict1,dict2):
 
 def extractSURFFeatures(image,draw, N=7):
     #Extract SURF features (between 10000 and 30000 are good values)
-    (keypoints, descriptors) = cv2.ExtractSURF(image, None, cv2.CreateMemStorage(), (0, 100, 3, 2) )
+    #(keypoints, descriptors) = cv2.ExtractSURF(image, None, cv2.CreateMemStorage(), (0, 100, 3, 2) )
+
+#upgrade to opencv2:
+    #surf = cv2.SURF(400)
+    surf = cv2.xfeatures2d.SURF_create(400)
+    (keypoints, descriptors)= surf.detectAndCompute(image,None)
 
     #Want to take the X best ones
     sortedDescriptorListPairs = [descriptor for keypoint, descriptor in sorted(zip(keypoints, descriptors), key=(lambda (keypoint, descriptors): keypoint[4]), reverse = True) ]
