@@ -1,0 +1,13 @@
+sudo pip2 install pyflann
+sudo pip2 install opencv-python
+
+change
+  import cv
+  to
+import cv2
+
+
+python2 go.py
+
+
+change rootFolder in SURFExtractor.py

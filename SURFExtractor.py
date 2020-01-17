@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import os
-import cv
+import cv2
 import numpy as np
 import pyflann as flann
 import unittest
@@ -8,7 +8,7 @@ import re
 import makeMaze as mm
 
 #rootFolder = "/Users/alansaul/Work/CompSci/SURE/hclearn_alan/"
-rootFolder = "/Users/mathew/work/hclearn/"
+rootFolder = "/home/charles/git/hclearn/"
 
 #This is the folder being used by makeSURFRepresentation to create the surf features for learnWeights
 prefixFolder = rootFolder + "DCSCourtyard/"
@@ -82,7 +82,7 @@ class SURFExtractor(object):
             #print("\n%d, %s key" % (loc,dir))
             self.descriptors[(loc,dir)] = []
             for image in files[(loc,dir)]:
-                cvIm = cv.LoadImageM(image, cv.CV_LOAD_IMAGE_GRAYSCALE)
+                cvIm = cv2.imread(image, cv2.IMREAD_GRAYSCALE)
                 imFeatures = extractSURFFeatures(cvIm,0,maxNumOfDescriptors)
                 self.descriptors[(loc,dir)].append(imFeatures)
 
@@ -374,7 +374,7 @@ def compareDicts(dict1,dict2):
 
 def extractSURFFeatures(image,draw, N=7):
     #Extract SURF features (between 10000 and 30000 are good values)
-    (keypoints, descriptors) = cv.ExtractSURF(image, None, cv.CreateMemStorage(), (0, 100, 3, 2) )
+    (keypoints, descriptors) = cv2.ExtractSURF(image, None, cv2.CreateMemStorage(), (0, 100, 3, 2) )
 
     #Want to take the X best ones
     sortedDescriptorListPairs = [descriptor for keypoint, descriptor in sorted(zip(keypoints, descriptors), key=(lambda (keypoint, descriptors): keypoint[4]), reverse = True) ]

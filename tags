@@ -1,0 +1,270 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CA1State	paths.py	/^class CA1State:$/;"	c
+CA3State	paths.py	/^class CA3State:  $/;"	c
+CA3StateFromInputs	paths.py	/^def CA3StateFromInputs(ec, dg, lightState):$/;"	f
+CA3StateFromVector	paths.py	/^def CA3StateFromVector(v_ca3, N_places):$/;"	f
+DGHelper	DGStateAlan.py	/^class DGHelper:$/;"	c
+DGState	DGStateAlan.py	/^class DGState:$/;"	c
+DictGrids	location.py	/^class DictGrids:$/;"	c
+ECState	paths.py	/^class ECState:           #just flattens grids, and adds lightAhead to the Senses object!$/;"	c
+FWD	makeMaze.py	/^FWD=1$/;"	v
+History	hcq.py	/^class History:$/;"	c
+LEFT	makeMaze.py	/^LEFT=2$/;"	v
+Location	location.py	/^class Location:$/;"	c
+N_mazeSize	go.py	/^N_mazeSize=3$/;"	v
+Paths	paths.py	/^class Paths:$/;"	c
+RIGHT	makeMaze.py	/^RIGHT=3$/;"	v
+SEED	DGStateAlan.py	/^SEED=2942875  #95731  #73765$/;"	v
+SEED	hcq.py	/^SEED=2942875  #95731  #73765$/;"	v
+STAY	makeMaze.py	/^STAY=0   #enum actions$/;"	v
+SURFExtractor	SURFExtractor.py	/^class SURFExtractor(object):$/;"	c
+Senses	makeMaze.py	/^class Senses:$/;"	c
+T	go.py	/^T=3000   #trained on 30000   #better to have one long path than mult epochs on overfit little path$/;"	v
+T	test.py	/^T = hids.shape[0]$/;"	v
+TestComparisons	SURFExtractor.py	/^class TestComparisons(unittest.TestCase):$/;"	c
+TestEncoding	DGStateAlan.py	/^class TestEncoding(unittest.TestCase):$/;"	c
+TestExtractor	SURFExtractor.py	/^class TestExtractor(unittest.TestCase):$/;"	c
+UTURN	makeMaze.py	/^UTURN=4$/;"	v
+WB	test.py	/^WB = np.load('tWB.npy'); WB=WB.reshape((86,1))$/;"	v
+WB_ideal	go.py	/^WB_ideal = np.load('WB.npy')$/;"	v
+WB_rand	go.py	/^WB_rand = 0+ 0*np.random.random(WB_ideal.shape)$/;"	v
+WB_t	go.py	/^WB_t = WB_t.reshape(WB_t.shape[0])   #in case was learned as 1*N array instead of just N.$/;"	v
+WB_t	go.py	/^WB_t = np.load('tWB.npy')$/;"	v
+WO	test.py	/^WO = np.load('tWO.npy')$/;"	v
+WO_ideal	go.py	/^WO_ideal = np.load('WO.npy')$/;"	v
+WO_rand	go.py	/^WO_rand = 0+ 0*np.random.random(WO_ideal.shape)$/;"	v
+WO_t	go.py	/^WO_t = np.load('tWO.npy')$/;"	v
+WR	test.py	/^WR = np.load('tWR.npy')$/;"	v
+WR	test.py	/^WR = np.random.random(WR.shape)$/;"	v
+WR_ideal	go.py	/^WR_ideal = np.load('WR.npy')       ##NB loading trained versions from perfect look-ahead training$/;"	v
+WR_rand	go.py	/^WR_rand = 0+ 0*np.random.random(WR_ideal.shape)$/;"	v
+WR_t	go.py	/^WR_t = np.load('tWR.npy')       ##NB loading trained versions from genuine wake sleep$/;"	v
+WS	test.py	/^WS = np.load('tWS.npy')$/;"	v
+WS_ideal	go.py	/^WS_ideal = np.load('WS.npy')$/;"	v
+WS_rand	go.py	/^WS_rand = 0+ 0*np.random.random(WS_ideal.shape)$/;"	v
+WS_t	go.py	/^WS_t = np.load('tWS.npy')$/;"	v
+__init__	DGStateAlan.py	/^    def __init__(self,  ec, dictGrids, dghelper=None):$/;"	m	class:DGState
+__init__	DGStateAlan.py	/^    def __init__(self, numOfSurfFeatures=None, initialECDGweights=None, initialCA3CA1weights=None, X=3, N=4, initialSemantics=None):$/;"	m	class:DGHelper
+__init__	SURFExtractor.py	/^    def __init__(self, folderName, maxFeaturesForMerging=10, maxFeaturesForMatching=20, mergeThreshold=0.15, matchThreshold=0.2):$/;"	m	class:SURFExtractor
+__init__	hcq.py	/^    def __init__(self,  ec_log, dg_log, ca3_log, ca1_log, sub_ints, sub_errs, sub_fires, surf_gnd_log, str_title):$/;"	m	class:History
+__init__	location.py	/^    def __init__(self):$/;"	m	class:DictGrids
+__init__	location.py	/^    def __init__(self):$/;"	m	class:Location
+__init__	makeMaze.py	/^    def __init__(self,N_mazeSize, x,y, ith, SURFdict):$/;"	m	class:Senses
+__init__	paths.py	/^    def __init__(self, arg):$/;"	m	class:ECState
+__init__	paths.py	/^    def __init__(self, dictNext, N_mazeSize, T_max):$/;"	m	class:Paths
+__init__	paths.py	/^    def __init__(self, p_odom, p_senses, dghelper=None):$/;"	m	class:CA1State
+__init__	paths.py	/^    def __init__(self, place, place_hd, light, light_hd):$/;"	m	class:CA3State
+a	foo.py	/^a = np.array([1,2])$/;"	v
+accuracy	DGStateAlan.py	/^def accuracy(activation1, activation2):$/;"	f
+addBias	rbm.py	/^def addBias(xs):$/;"	f
+addNoise	DGStateAlan.py	/^def addNoise(data, probability):$/;"	f
+allSuites	SURFExtractor.py	/^    allSuites = comparisonsSuite$/;"	v	class:TestComparisons
+anote	go.py	/^    anote = "obsonly%s_gndCA3%s_gndgrid%s_sub%s_bl%s_MERGED0102_SUBT026" % (b_obsOnly, b_usePrevGroundTruthCA3, b_useGroundTruthGrids, b_useSub, b_learn)$/;"	v
+applyTemperature	cffun.py	/^def applyTemperature(p, T):$/;"	f
+argmaxs	rbm.py	/^def argmaxs(xs):$/;"	f
+b_inference	go.py	/^b_inference = True$/;"	v
+b_inference	go.py	/^b_inference=True$/;"	v
+b_learn	go.py	/^b_learn = False$/;"	v
+b_learnWeights	go.py	/^b_learnWeights=True$/;"	v
+b_obsOnly	go.py	/^b_obsOnly = False$/;"	v
+b_other	go.py	/^    b_other = False$/;"	v
+b_plot	go.py	/^b_plot=True$/;"	v
+b_useGroundTruthGrids	go.py	/^b_useGroundTruthGrids = False$/;"	v
+b_useNewDG	go.py	/^    b_useNewDG = (sys.argv[1] == "True")$/;"	v
+b_useNewDG	go.py	/^    b_useNewDG = True$/;"	v
+b_usePrevGroundTruthCA3	go.py	/^b_usePrevGroundTruthCA3 = False$/;"	v
+b_useSub	go.py	/^b_useSub = True$/;"	v
+boltzmannProbs	rbm.py	/^def boltzmannProbs(W, x):      # RETURNS THE PROBABILITY OF A NODE BEING ON$/;"	f
+ca3_gnd_b	test.py	/^ca3_gnd_b = addBias(hids)$/;"	v
+ca3_hat_b	test.py	/^ca3_hat_b = addBias(p_all)$/;"	v
+ca3_states_to_matrix	paths.py	/^def ca3_states_to_matrix(ca3s):$/;"	f
+ca3s2v	paths.py	/^def ca3s2v(ca3s):    #CA3 states to vector$/;"	f
+calculateFeatureVector	SURFExtractor.py	/^def calculateFeatureVector(flann, featureDescs, matchThreshold, sizeOfFeatureVector):$/;"	f
+calculateSharedFeatures	SURFExtractor.py	/^def calculateSharedFeatures(featureVector1, featureVector2):$/;"	f
+calculate_performance	DGStateAlan.py	/^def calculate_performance(trainingData, inputDataSet, X, N, presentationOfData, learningrate=0.01):$/;"	f
+cf_beta	cffun.py	/^def cf_beta(N,k):$/;"	f
+collapseToMax	paths.py	/^    def collapseToMax(self):    #use this if I was created from a prob vec$/;"	m	class:ECState
+compareDescriptors	SURFExtractor.py	/^def compareDescriptors(indexDescriptors, imageDescs, threshold=0.05):$/;"	f
+compareDicts	SURFExtractor.py	/^def compareDicts(dict1,dict2):$/;"	f
+comparisonsSuite	SURFExtractor.py	/^    comparisonsSuite = unittest.TestLoader().loadTestsFromTestCase(TestComparisons)$/;"	v	class:TestComparisons
+completeSuite	SURFExtractor.py	/^    completeSuite = unittest.TestSuite(allSuites)$/;"	v	class:TestComparisons
+computeDescriptorCloseness	SURFExtractor.py	/^def computeDescriptorCloseness(image1,image2,draw):$/;"	f
+crop	cffun.py	/^def crop(x, xmin, xmax):$/;"	f
+decode	DGStateAlan.py	/^    def decode(self, probabilitiesOfFiring):$/;"	m	class:DGHelper
+decode	DGStateAlan.py	/^    def decode(self, probabilitiesOfFiring):$/;"	m	class:DGState
+dghelper	go.py	/^    dghelper = learnWeights.learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b_learnIdeal=True, b_learnTrained=True, b_learnDGWeights=b_useNewDG, learningRate=learningRate)$/;"	v
+dghelper	go.py	/^    dghelper=None$/;"	v
+dictGrids	go.py	/^dictGrids = DictGrids()$/;"	v
+dictGrids	location.py	/^dictGrids = DictGrids()$/;"	v
+dictGrids	test.py	/^dictGrids = DictGrids()$/;"	v
+directions	SURFExtractor.py	/^    directions = ['N','E','S','W']$/;"	v	class:SURFExtractor
+drawMaze	gui.py	/^def drawMaze():$/;"	f
+drawPath	gui.py	/^def drawPath(xys_raw, color):$/;"	f
+drawSquare	gui.py	/^def drawSquare(x,y):$/;"	f
+e	test.py	/^e =  sum (sum(xy_hat!=xy_gnd, 1)!=0)$/;"	v
+e_all	test.py	/^e_all = sum( (p_all-hids)**2 ) \/ T$/;"	v
+e_null	test.py	/^e_null = sum( (p_null-hids)**2 ) \/ T$/;"	v
+e_odom	test.py	/^e_odom = sum( (p_odom-hids)**2 ) \/ T$/;"	v
+e_senses	test.py	/^e_senses = sum( (p_senses-hids)**2 ) \/ T$/;"	v
+e_trans	test.py	/^e_trans = sum( (p_trans-hids)**2 ) \/ T$/;"	v
+ecs2vd	paths.py	/^def ecs2vd(ec_states):$/;"	f
+ecs2vd_oo	paths.py	/^def ecs2vd_oo(ec_states, dictGrids):$/;"	f
+ecs2vd_so	paths.py	/^def ecs2vd_so(ec_states, dictGrids, dghelper=None):$/;"	f
+encode	DGStateAlan.py	/^    def encode(self):$/;"	m	class:DGState
+encode	DGStateAlan.py	/^    def encode(self, inputActivationValues):$/;"	m	class:DGHelper
+err	learnWeights.py	/^def err(ps, hids):$/;"	f
+err	test.py	/^def err(ps, hids):$/;"	f
+extractDescriptors	SURFExtractor.py	/^    def extractDescriptors(self, files, maxNumOfDescriptors):$/;"	m	class:SURFExtractor
+extractFilesByFolder	SURFExtractor.py	/^    def extractFilesByFolder(self, folder):$/;"	m	class:SURFExtractor
+extractFilesByPrefix	SURFExtractor.py	/^    def extractFilesByPrefix(self, folder):$/;"	m	class:SURFExtractor
+extractSURFFeatures	SURFExtractor.py	/^def extractSURFFeatures(image,draw, N=7):$/;"	f
+extractSuite	SURFExtractor.py	/^    extractSuite  = unittest.TestLoader().loadTestsFromTestCase(TestExtractor)$/;"	v	class:TestComparisons
+f	foo.py	/^def f(x):$/;"	f
+findBooleanFeatureVector	SURFExtractor.py	/^def findBooleanFeatureVector(totalNumberOfFeatures, featuresWithinThreshold):$/;"	f
+findClosestMatchingFeaturesPairs	SURFExtractor.py	/^def findClosestMatchingFeaturesPairs(trainingData, k, testData=None):$/;"	f
+findMatchingFeatures	SURFExtractor.py	/^def findMatchingFeatures(resultInds, dists, threshold):$/;"	f
+findNearestFeatures	SURFExtractor.py	/^def findNearestFeatures(flann, featureDescs):$/;"	f
+findSurfs	makeMaze.py	/^def findSurfs(x,y,ith,SURFdict):$/;"	f
+fn	go.py	/^            fn = 'outPC\/cell'+str(i)$/;"	v
+fuse	cffun.py	/^def fuse(p1, p2):  #fuse two vectors of probabilities (eg pi and lam for a set of nodes)$/;"	f
+fuse2	learnWeights.py	/^def fuse2(p1,p2):$/;"	f
+fuse2	test.py	/^def fuse2(p1,p2):$/;"	f
+gComponent	location.py	/^def gComponent(x, i):$/;"	f
+generateFeatureRepresentations	SURFExtractor.py	/^    def generateFeatureRepresentations(self, byFolder=1):$/;"	m	class:SURFExtractor
+generateFeatureVectors	SURFExtractor.py	/^    def generateFeatureVectors(self):$/;"	m	class:SURFExtractor
+generateSemantics	DGStateAlan.py	/^    def generateSemantics(self, N, X, numOfFeatures):$/;"	m	class:DGHelper
+getFirstDescs	SURFExtractor.py	/^    def getFirstDescs(self):$/;"	m	class:SURFExtractor
+getGrids	location.py	/^    def getGrids(self):$/;"	m	class:Location
+getGrids	location.py	/^def getGrids(x,y):$/;"	f
+getGroundTruthFiring	paths.py	/^    def getGroundTruthFiring(self,dictSenses,dictGrids,N_mazeSize,t,dghelper=None):$/;"	m	class:Paths
+getGroundTruthFirings	paths.py	/^    def getGroundTruthFirings(self, dictSenses, dictGrids, N_mazeSize, dghelper=None):$/;"	m	class:Paths
+getNoiseyGPSFirings	paths.py	/^    def getNoiseyGPSFirings(self, dictSenses, dictGrids, N_mazeSize, dghelper=None):$/;"	m	class:Paths
+getOriginalValues	DGStateAlan.py	/^    def getOriginalValues(self, thresholdedFeatureVector):$/;"	m	class:DGHelper
+getSemanticValues	DGStateAlan.py	/^    def getSemanticValues(self, featureVector):$/;"	m	class:DGHelper
+getWeightChange	hcq.py	/^def getWeightChange(hids, input):$/;"	f
+getXY	location.py	/^    def getXY(self):$/;"	m	class:Location
+hardThreshold	rbm.py	/^def hardThreshold(xs):$/;"	f
+hids	test.py	/^hids=np.load('hids.npy')$/;"	v
+hidslag	test.py	/^hidslag = lag(hids,1)$/;"	v
+hist1	go.py	/^    hist1    = makeMAPPredictions(path,dictGrids, dictSenses, WB_t, WR_t, WS_t, WO_t, dghelper, b_obsOnly=b_obsOnly, b_usePrevGroundTruthCA3=b_usePrevGroundTruthCA3,  b_useGroundTruthGrids=b_useGroundTruthGrids,  b_useSub=b_useSub, str_title="Learned", b_learn=b_learn)$/;"	v
+hist2	go.py	/^    hist2   = makeMAPPredictions(path,dictGrids, dictSenses, WB_rand,  WR_rand,  WS_rand, WO_rand, dghelper, b_obsOnly=b_obsOnly, b_usePrevGroundTruthCA3=b_usePrevGroundTruthCA3,  b_useGroundTruthGrids=b_useGroundTruthGrids,  b_useSub=b_useSub, str_title="Random", b_learn=b_learn)$/;"	v
+hist3	go.py	/^    hist3 = makeMAPPredictions(path,dictGrids, dictSenses, WB_ideal, WR_ideal, WS_ideal, WO_ideal, dghelper, b_obsOnly=b_obsOnly,  b_usePrevGroundTruthCA3=b_usePrevGroundTruthCA3,  b_useGroundTruthGrids=b_useGroundTruthGrids, b_useSub=b_useSub, str_title="Handset", b_learn=b_learn)$/;"	v
+imagesc	cffun.py	/^def imagesc(img):$/;"	f
+invsig	cffun.py	/^def invsig(x):$/;"	f
+lag	cffun.py	/^def lag(M, n):$/;"	f
+learn	DGStateAlan.py	/^    def learn(self, inputActivationValues, learnCA3CA1weights=False, learningrate=0.01):$/;"	m	class:DGHelper
+learn	learnWeights.py	/^def learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b_learnIdeal=True, b_learnTrained=False, b_learnDGWeights=True, learningRate=0.01):$/;"	f
+learnCA3CA1weights	DGStateAlan.py	/^    def learnCA3CA1weights(self, inputActivationValues, DGEncodedValues, learningrate=0.01):$/;"	m	class:DGHelper
+learnECDGweights	DGStateAlan.py	/^    def learnECDGweights(self, winningNeurons, semanticValues, learningrate=0.01):$/;"	m	class:DGHelper
+learningRate	go.py	/^    learningRate = 0.01$/;"	v
+learningRate	go.py	/^    learningRate = float(sys.argv[2])$/;"	v
+lookup	location.py	/^    def lookup(self, grids):$/;"	m	class:DictGrids
+makeMAPPredictions	hcq.py	/^def makeMAPPredictions(path,dictGrids, dictSenses, WB, WR, WS, WO, dghelper, b_obsOnly, b_usePrevGroundTruthCA3, b_useGroundTruthGrids, b_useSub, str_title, b_learn):  $/;"	f
+makeMAPPredictionsStep	hcq.py	/^def makeMAPPredictionsStep(dictGrids, ec, ca3, ca3_PREV_gnd, sub_int, WB, WR, WS, WO,  b_obsOnly, b_usePrevGroundTruthCA3, b_useSub, dghelper=None):$/;"	f
+makeMaze	makeMaze.py	/^def makeMaze(n, b_useNewDG=False):$/;"	f
+makeNoisyCopy	paths.py	/^    def makeNoisyCopy(self, b_GPSNoise=True):   #makes and returns a noisy copy$/;"	m	class:ECState
+makeSURFRepresentation	SURFExtractor.py	/^def makeSURFRepresentation():$/;"	f
+mergeFeaturePair	SURFExtractor.py	/^def mergeFeaturePair(feature1, feature2):$/;"	f
+mergeFeatures	SURFExtractor.py	/^    def mergeFeatures(self, random=0):$/;"	m	class:SURFExtractor
+mergeFeatures	SURFExtractor.py	/^def mergeFeatures(trainingSet, threshold=0.05):$/;"	f
+mergeSetup	SURFExtractor.py	/^    def mergeSetup(self):$/;"	m	class:TestComparisons
+normalise	DGStateAlan.py	/^def normalise(matrix, axis):$/;"	f
+odom	test.py	/^odom=np.load('odom.npy')$/;"	v
+p_all	test.py	/^p_all = fuse(p_all, p_senses)$/;"	v
+p_all	test.py	/^p_all = fuse(p_all, p_trans) $/;"	v
+p_all	test.py	/^p_all = fuse(p_null, p_odom)$/;"	v
+p_null	test.py	/^p_null = stripBias(boltzmannProbs(WB, np.ones((T,1)).transpose() ).transpose())$/;"	v
+p_odom	test.py	/^p_odom = stripBias(boltzmannProbs(WO, addBias(odom).transpose()).transpose())$/;"	v
+p_odom_null	test.py	/^p_odom_null   = fuse(p_odom, p_null)$/;"	v
+p_senses	test.py	/^p_senses = stripBias(boltzmannProbs(WS, addBias(senses).transpose()).transpose())$/;"	v
+p_senses_null	test.py	/^p_senses_null = fuse(p_senses, p_null)$/;"	v
+p_trans	test.py	/^p_trans = stripBias(boltzmannProbs(WR, addBias(hidslag).transpose()).transpose())$/;"	v
+p_trans_null	test.py	/^p_trans_null  = fuse(p_trans, p_null)$/;"	v
+path	go.py	/^path = Paths(dictNext,N_mazeSize, T)          #a random walk through the maze -- a list of world states (not percepts)$/;"	v
+placeCells2placeID	paths.py	/^def placeCells2placeID(_pcs, n_mazeSize):$/;"	f
+plotErrors	gui.py	/^def plotErrors(hist1, hist2, hist3, lost1, lost2, lost3, learningRate, subTest = True, surfTest = True, placeTest=True, note=""):$/;"	f
+plotPlaceCells	plotPlaceCells.py	/^def plotPlaceCells(hist, iCell, gridDict):$/;"	f
+plotResults	gui.py	/^def plotResults(path, hist, dictGrids, b_useNewDG, learningRate, note=""):$/;"	f
+prefixFolder	SURFExtractor.py	/^prefixFolder = rootFolder + "DCSCourtyard\/"$/;"	v
+rootFolder	SURFExtractor.py	/^rootFolder = "\/home\/charles\/git\/hclearn\/"$/;"	v
+sanitiseTheta	cffun.py	/^def sanitiseTheta(th):$/;"	f
+senses	test.py	/^senses=np.load('senses.npy')$/;"	v
+setCA3CA1Weights	DGStateAlan.py	/^    def setCA3CA1Weights(self, CA3CA1weights):$/;"	m	class:DGHelper
+setECDGWeights	DGStateAlan.py	/^    def setECDGWeights(self, ECDGweights):$/;"	m	class:DGHelper
+setGrids	location.py	/^    def setGrids(self, grids, dictGrids):$/;"	m	class:Location
+setPlaceId	location.py	/^    def setPlaceId(self, placeId):$/;"	m	class:Location
+setUp	DGStateAlan.py	/^    def setUp(self):$/;"	m	class:TestEncoding
+setUp	SURFExtractor.py	/^    def setUp(self):$/;"	m	class:TestComparisons
+setUp	SURFExtractor.py	/^    def setUp(self):$/;"	m	class:TestExtractor
+setXY	location.py	/^    def setXY(self, x, y):$/;"	m	class:Location
+setupMerging	SURFExtractor.py	/^    def setupMerging(self):$/;"	m	class:TestExtractor
+sig	cffun.py	/^def sig(x):$/;"	f
+sleepStep	hcq.py	/^def sleepStep(ec, ca3, WB, WR, WS, WO, b_fakeSub):$/;"	f
+smartCollapse	DGStateAlan.py	/^    def smartCollapse(self):$/;"	m	class:DGState
+smartCollapse	DGStateAlan.py	/^def smartCollapse(xs):$/;"	f
+smartCollapse	paths.py	/^    def smartCollapse(self):$/;"	m	class:CA3State
+smartCollapseMatrix	DGStateAlan.py	/^def smartCollapseMatrix(xs):$/;"	f
+stripBias	rbm.py	/^def stripBias(xs):$/;"	f
+test_CA3CA1learning	DGStateAlan.py	/^    def test_CA3CA1learning(self):$/;"	m	class:TestEncoding
+test_Senses_init	SURFExtractor.py	/^    def test_Senses_init(self):$/;"	m	class:TestExtractor
+test_decode	DGStateAlan.py	/^    def test_decode(self):$/;"	m	class:TestEncoding
+test_dot_product	DGStateAlan.py	/^    def test_dot_product(self):$/;"	m	class:TestEncoding
+test_drawing	SURFExtractor.py	/^    def test_drawing(self):$/;"	m	class:TestComparisons
+test_encode_ability	DGStateAlan.py	/^    def test_encode_ability(self):$/;"	m	class:TestEncoding
+test_encode_type	DGStateAlan.py	/^    def test_encode_type(self):$/;"	m	class:TestEncoding
+test_extractByFolder	SURFExtractor.py	/^    def test_extractByFolder(self):$/;"	m	class:TestExtractor
+test_extractByPrefix	SURFExtractor.py	/^    def test_extractByPrefix(self):$/;"	m	class:TestExtractor
+test_extractDescriptors	SURFExtractor.py	/^    def test_extractDescriptors(self):$/;"	m	class:TestExtractor
+test_featureMerging	SURFExtractor.py	/^    def test_featureMerging(self):$/;"	m	class:TestComparisons
+test_findSurfs	SURFExtractor.py	/^    def test_findSurfs(self):$/;"	m	class:TestExtractor
+test_generateFeatureRepresentations	SURFExtractor.py	/^    def test_generateFeatureRepresentations(self):$/;"	m	class:TestExtractor
+test_generateFeatureVectors	SURFExtractor.py	/^    def test_generateFeatureVectors(self):$/;"	m	class:TestExtractor
+test_getFirstDescs	SURFExtractor.py	/^    def test_getFirstDescs(self):$/;"	m	class:TestExtractor
+test_learning	DGStateAlan.py	/^    def test_learning(self):$/;"	m	class:TestEncoding
+test_learningCA3CA1weights	DGStateAlan.py	/^    def test_learningCA3CA1weights(self):$/;"	m	class:TestEncoding
+test_makeSURFRepresentation	SURFExtractor.py	/^    def test_makeSURFRepresentation(self):$/;"	m	class:TestExtractor
+test_making_DGState	DGStateAlan.py	/^    def test_making_DGState(self):$/;"	m	class:TestEncoding
+test_mergeFeatureSets	SURFExtractor.py	/^    def test_mergeFeatureSets(self):$/;"	m	class:TestComparisons
+test_mergeFeatures	SURFExtractor.py	/^    def test_mergeFeatures(self):$/;"	m	class:TestExtractor
+test_mergeQuality	SURFExtractor.py	/^    def test_mergeQuality(self):$/;"	m	class:TestExtractor
+test_merge_senses_and_features	SURFExtractor.py	/^    def test_merge_senses_and_features(self):$/;"	m	class:TestExtractor
+test_multiple_learning	DGStateAlan.py	/^    def test_multiple_learning(self):$/;"	m	class:TestEncoding
+test_normalisation	DGStateAlan.py	/^    def test_normalisation(self):$/;"	m	class:TestEncoding
+test_overlap_of_feature_matches	SURFExtractor.py	/^    def test_overlap_of_feature_matches(self):$/;"	m	class:TestComparisons
+test_performanceMeasure	DGStateAlan.py	/^    def test_performanceMeasure(self):$/;"	m	class:TestEncoding
+test_recognition	SURFExtractor.py	/^    def test_recognition(self):$/;"	m	class:TestComparisons
+test_same	SURFExtractor.py	/^    def test_same(self):$/;"	m	class:TestComparisons
+test_semantic_values	DGStateAlan.py	/^    def test_semantic_values(self):$/;"	m	class:TestEncoding
+test_similar_greater_than_dissimilar	SURFExtractor.py	/^    def test_similar_greater_than_dissimilar(self):$/;"	m	class:TestComparisons
+test_smartCollapseMatrix	DGStateAlan.py	/^    def test_smartCollapseMatrix(self):$/;"	m	class:TestEncoding
+toString	paths.py	/^    def toString(self):$/;"	m	class:CA1State
+toString	paths.py	/^    def toString(self):$/;"	m	class:CA3State
+toString	paths.py	/^    def toString(self):$/;"	m	class:ECState
+toVector	DGStateAlan.py	/^    def toVector(self):$/;"	m	class:DGState
+toVector	paths.py	/^    def toVector(self):$/;"	m	class:CA3State
+toVector	paths.py	/^    def toVector(self):$/;"	m	class:ECState
+toVectorD	paths.py	/^    def toVectorD(self,dictGrids, dghelper=None):  #with dentate and bias$/;"	m	class:ECState
+toVectorOdomOnly	DGStateAlan.py	/^    def toVectorOdomOnly(self):$/;"	m	class:DGState
+toVectorOdomOnly	paths.py	/^    def toVectorOdomOnly(self):$/;"	m	class:ECState
+toVectorOdomOnlyD	paths.py	/^    def toVectorOdomOnlyD(self,dictGrids):$/;"	m	class:ECState
+toVectorSensesOnly	DGStateAlan.py	/^    def toVectorSensesOnly(self):$/;"	m	class:DGState
+toVectorSensesOnly	paths.py	/^    def toVectorSensesOnly(self):$/;"	m	class:ECState
+toVectorSensesOnlyD	paths.py	/^    def toVectorSensesOnlyD(self,dictGrids, dghelper=None):$/;"	m	class:ECState
+toVectorSurfOnly	DGStateAlan.py	/^    def toVectorSurfOnly(self):$/;"	m	class:DGState
+trainFLANN	SURFExtractor.py	/^def trainFLANN(trainingData):$/;"	f
+trainPriorBias	rbm.py	/^def trainPriorBias(hids):      # SEEMS TO CONCATENATE AND NORMALISE THE HIDDEN UNIT VALUES$/;"	f
+trainW	rbm.py	/^def trainW(obs, hids, WB, N_epochs, alpha):    #training observation weights$/;"	f
+train_weights	DGStateAlan.py	/^def train_weights(trainingData, X, N, presentationOfData, learningrate=0.01):$/;"	f
+unittesting	DGStateAlan.py	/^    unittesting = 1$/;"	v	class:TestEncoding
+unittesting	DGStateAlan.py	/^unittesting=0$/;"	v
+updateGrids	paths.py	/^    def updateGrids(self, ca1grids, ca1hd, b_odom, N_mazeSize, dictGrids):  $/;"	m	class:ECState
+updateHeading	paths.py	/^    def updateHeading(self, ca1hd, d_th):$/;"	m	class:ECState
+w	normalisingTest.py	/^w = np.array([[[0, 1, 1],$/;"	v
+wakeStep	hcq.py	/^def wakeStep(ec, ca3, WB, WR, WS, WO, b_fakeSub):$/;"	f
+xy_gnd	test.py	/^xy_gnd = np.zeros((T,2))$/;"	v
+xy_hat	test.py	/^xy_hat = np.zeros((T,2))$/;"	v
