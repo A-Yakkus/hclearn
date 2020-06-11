@@ -1,6 +1,6 @@
 import numpy as np
-from SURFExtractor import makeSURFRepresentation
 from location import Location
+from SURFExtractor import makeSURFRepresentation
 
 #an ideal set of EC responses, to a particular agent state (excluding lightAhead)
 #TODO: maybe classes should rep states in simplest possible way, and only convert to cells when requested??

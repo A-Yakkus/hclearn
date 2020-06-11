@@ -1,0 +1,6 @@
+*.prof
+*.csv
+.idea/*
+# Coverage outputs
+*.coverage*
+*htmlcov*

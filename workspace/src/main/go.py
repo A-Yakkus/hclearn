@@ -2,8 +2,8 @@ import matplotlib
 #matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
-from hcq import *
-from gui import *
+#from hcq import *
+#from gui import *
 from location import *
 from paths import * # CHANGED AS IPYTHON DOESN'T LIKE FILES/DIRS CALLED PATH
 from makeMaze import makeMaze
@@ -13,6 +13,8 @@ import learnWeights
 import sys
 
 pathing = "../data/"
+
+
 
 if len(sys.argv) == 3:
     b_useNewDG = (sys.argv[1] == "True")
@@ -76,7 +78,7 @@ path = Paths(dictNext, N_mazeSize, T)
 if b_learnWeights:
     print ("TRAINING...")
     # ALAN: Careful this won't exist if b_learnDGWeights is not true (I.e. we're not using SURF features)
-    #dghelper = learnWeights.learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b_learnIdeal=True, b_learnTrained=True, b_learnDGWeights=b_useNewDG, learningRate=learningRate)
+    dghelper = learnWeights.learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b_learnIdeal=True, b_learnTrained=True, b_learnDGWeights=b_useNewDG, learningRate=learningRate)
     #dghelper = learnWeights.learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b_learnIdeal=True, b_learnTrained=False, b_learnDGWeights=False, learningRate=learningRate)
     #dghelper = learnWeights.learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b_learnIdeal=False, b_learnTrained=True, b_learnDGWeights=False, learningRate=learningRate)
     #dghelper = learnWeights.learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b_learnIdeal=False, b_learnTrained=False, b_learnDGWeights=True, learningRate=learningRate)

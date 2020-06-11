@@ -5,14 +5,15 @@ import numpy as np
 import pyflann as flann
 import unittest
 import re
-import makeMaze as mm
+#import workspace.src.main.makeMaze as mm
 import pdb
 
 #rootFolder = "/Users/alansaul/Work/CompSci/SURE/hclearn_alan/"
 rootFolder = os.getcwd()+"/"   # "/home/charles/git/hclearn/"
 
 #This is the folder being used by makeSURFRepresentation to create the surf features for learnWeights
-prefixFolder = rootFolder + "../src/res/DCSCourtyard/"
+#prefixFolder = rootFolder + "../src/res/DCSCourtyard/"
+prefixFolder = rootFolder + "../res/DCSCourtyard/"
 
 class SURFExtractor(object):
     directions = ['N','E','S','W']
@@ -207,7 +208,7 @@ def extractSURFFeatures(image,draw, N=7):
             #print "x=%d y=%d laplacian=%d size=%d dir=%f hessian=%f" % (x, y, laplacian, size, dir, hessian)
             #For each feature draw a circle around it
             #Careful! Drawing on the images changes the images!!!
-            cv.Circle(image, (int(x),int(y)), size, (255.0, 0.0, 0.0,  0.0), 2)
+            cv2.Circle(image, (int(x),int(y)), size, (255.0, 0.0, 0.0,  0.0), 2)
     #return np.array(descriptors)
     return np.array(sortedDescriptorListPairs[0:N])
 

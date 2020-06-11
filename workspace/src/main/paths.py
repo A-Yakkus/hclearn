@@ -1,8 +1,8 @@
 
 print("[Paths]Go Me!")
 from cffun import *
-from makeMaze import Senses
-from location import Location
+#from makeMaze import Senses
+#from location import Location
 from DGStateAlan import DGState, smartCollapse
 
 #Senses, makeMaze

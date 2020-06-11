@@ -1,11 +1,11 @@
 import numpy as np
-from makeMaze import *
-from paths import *
-from cffun import *
+#from makeMaze import *
+#from paths import *
+#from cffun import *
 from rbm import *
 import DGStateAlan as DGStateAlan
 
-pathing = "../src/data/"
+pathing = "../data/"
 
 def err(ps, hids):
     return sum( (ps-hids)**2 ) / hids.shape[0]
