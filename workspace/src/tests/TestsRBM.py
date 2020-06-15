@@ -6,11 +6,14 @@ from numpy.testing import assert_array_equal, assert_almost_equal
 
 # framework selector, to be able to swap implementations easily.
 rbm = None
-framework = "tensorflow"
+framework = "tenszorflow"
 if framework is "tensorflow":
     print("Using Tensorflow Version")
     import workspace.src.main.tensor.TensorflowRBM as rbm
+    rbm.tf.debugging.set_log_device_placement(True)
     print("warmup:",(rbm.tf.constant(5)))
+
+
 else:
     print("Using Numpy Version")
     import workspace.src.main.rbm as rbm
@@ -266,3 +269,99 @@ class HardThresholdTests(unittest.TestCase):
         self.assertFalse(np.iscomplexobj(result), msg="[HardThreshold] Result of complex input returns a complex number.")
         self.assertLessEqual(np.max(np.absolute(result)), 1, msg="[HardThreshold] Absolute value of complex input is greater than 1.")
         self.assertGreaterEqual(np.min(np.absolute(result)), 0, msg="[HardThreshold] Absolute value of complex input is less than 0.")
+
+
+class ArgMaxsTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.vector_2 = np.array([[0.1, 0.2]])
+        self.matrix_2 = np.array([[0.1, 0.2],[0.5, 0.4]])
+        self.third_2 = np.array([[[0.1, 0.2], [0.3, 0.4]],[[0.5,0.6],[0.7, 0.8]]])
+        self.vector_1000 = np.random.uniform(0, 1, (1000,1))
+        self.matrix_1000 = np.random.uniform(0, 1, (1000,1000))
+        self.third_1000 = np.random.uniform(0, 1, (100,100,100))
+
+    def test_two_vector(self):
+        """
+        Checks the functionality on a 1x2 vector
+        Should pass
+        :return:
+        """
+        calculated_results = rbm.argmaxs(self.vector_2)
+        actual_results = np.argmax(self.vector_2)
+        # Move to numpy array, although tensorflow might do this automagically.
+        if type(calculated_results) is rbm.tf.Tensor:
+            calculated_results = calculated_results.numpy()
+        assert_almost_equal(calculated_results, actual_results,
+                            err_msg="[ArgMaxs] Calculated results are not equal to actual results to 7 decimal places.")
+
+    def test_thousand_vector(self):
+        """
+        Checks the functionality on a 1x1000 vector
+        Should pass
+        :return:
+        """
+        calculated_results = rbm.argmaxs(self.vector_1000)
+        actual_results = np.argmax(self.vector_1000)
+        # Move to numpy array, although tensorflow might do this automagically.
+        if type(calculated_results) is rbm.tf.Tensor:
+            calculated_results = calculated_results.numpy()
+        assert_almost_equal(calculated_results, actual_results,
+                            err_msg="[ArgMaxs] Calculated results are not equal to actual results to 7 decimal places.")
+
+    def test_two_matrix(self):
+        """
+        Checks the functionality on a 2x2 vector
+        Should pass
+        :return:
+        """
+        calculated_results = rbm.argmaxs(self.matrix_2)
+        actual_results = np.argmax(self.matrix_2)
+        # Move to numpy array, although tensorflow might do this automagically.
+        if type(calculated_results) is rbm.tf.Tensor:
+            calculated_results = calculated_results.numpy()
+        assert_almost_equal(calculated_results, actual_results,
+                            err_msg="[ArgMaxs] Calculated results are not equal to actual results to 7 decimal places.")
+
+    def test_thousand_matrix(self):
+        """
+        Checks the functionality on a 1000x2 vector
+        Should pass
+        :return:
+        """
+        calculated_results = rbm.argmaxs(self.matrix_1000)
+        actual_results = np.argmax(self.matrix_1000)
+        # Move to numpy array, although tensorflow might do this automagically.
+        if type(calculated_results) is rbm.tf.Tensor:
+            calculated_results = calculated_results.numpy()
+        assert_almost_equal(calculated_results, actual_results,
+                            err_msg="[ArgMaxs] Calculated results are not equal to actual results to 7 decimal places.")
+
+    def test_two_three_dimensional(self):
+        """
+        Checks the functionality on a 2x2 vector
+        Should pass
+        :return:
+        """
+        calculated_results = rbm.argmaxs(self.third_2)
+        actual_results = np.argmax(self.third_2)
+        # Move to numpy array, although tensorflow might do this automagically.
+        if type(calculated_results) is rbm.tf.Tensor:
+            calculated_results = calculated_results.numpy()
+        assert_almost_equal(calculated_results, actual_results,
+                            err_msg="[ArgMaxs] Calculated results are not equal to actual results to 7 decimal places.")
+
+    def test_thousand_three_dimensional(self):
+        """
+        Checks the functionality on a 1000x2 vector
+        Should pass
+        :return:
+        """
+        calculated_results = rbm.argmaxs(self.third_1000)
+        actual_results = np.argmax(self.third_1000)
+        # Move to numpy array, although tensorflow might do this automagically.
+        if type(calculated_results) is rbm.tf.Tensor:
+            calculated_results = calculated_results.numpy()
+        assert_almost_equal(calculated_results, actual_results,
+                            err_msg="[ArgMaxs] Calculated results are not equal to actual results to 7 decimal places.")
+
+
