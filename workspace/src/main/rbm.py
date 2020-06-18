@@ -91,8 +91,6 @@ def hardThreshold(xs):
         r[t,:]= (xs[t,:]>0.5)
     return r
 
-
-
 def addBias(xs):
     T=xs.shape[0]
     out = np.hstack((xs,np.ones((T,1))))

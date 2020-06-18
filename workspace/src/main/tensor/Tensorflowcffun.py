@@ -8,3 +8,10 @@ def fuse(p1, p2):
 def invsig(x):
     return -tf.math.log((1.0/x)-1)
 
+def lag(M, n):
+    tiled = tf.tile(M[0], tf.constant([n]))
+    tiled = tf.reshape(tiled,(n, len(M[0])))
+    cat = tf.concat((tiled, M), axis=0)
+    return cat[:-n]
+
+

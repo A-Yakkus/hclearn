@@ -4,3 +4,5 @@
 # Coverage outputs
 *.coverage*
 *htmlcov*
+*.log
+*.pyc

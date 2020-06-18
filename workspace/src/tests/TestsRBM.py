@@ -1,21 +1,20 @@
 import unittest
 from unittest import expectedFailure
+import tensorflow as tf
 import numpy as np
 from numpy.testing import assert_array_equal, assert_almost_equal
-
+import sys
+sys.path.insert(0, "/home/yakkus/github/jack-fork/hclearn/workspace/src/main")
 
 # framework selector, to be able to swap implementations easily.
 rbm = None
-framework = "tenszorflow"
+framework = "tensorflow"
 if framework is "tensorflow":
-    print("Using Tensorflow Version")
+    print("[RBM]Using Tensorflow Version")
     import workspace.src.main.tensor.TensorflowRBM as rbm
     rbm.tf.debugging.set_log_device_placement(True)
-    print("warmup:",(rbm.tf.constant(5)))
-
-
 else:
-    print("Using Numpy Version")
+    print("[RBM]Using Numpy Version")
     import workspace.src.main.rbm as rbm
 
 
@@ -273,40 +272,8 @@ class HardThresholdTests(unittest.TestCase):
 
 class ArgMaxsTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.vector_2 = np.array([[0.1, 0.2]])
         self.matrix_2 = np.array([[0.1, 0.2],[0.5, 0.4]])
-        self.third_2 = np.array([[[0.1, 0.2], [0.3, 0.4]],[[0.5,0.6],[0.7, 0.8]]])
-        self.vector_1000 = np.random.uniform(0, 1, (1000,1))
         self.matrix_1000 = np.random.uniform(0, 1, (1000,1000))
-        self.third_1000 = np.random.uniform(0, 1, (100,100,100))
-
-    def test_two_vector(self):
-        """
-        Checks the functionality on a 1x2 vector
-        Should pass
-        :return:
-        """
-        calculated_results = rbm.argmaxs(self.vector_2)
-        actual_results = np.argmax(self.vector_2)
-        # Move to numpy array, although tensorflow might do this automagically.
-        if type(calculated_results) is rbm.tf.Tensor:
-            calculated_results = calculated_results.numpy()
-        assert_almost_equal(calculated_results, actual_results,
-                            err_msg="[ArgMaxs] Calculated results are not equal to actual results to 7 decimal places.")
-
-    def test_thousand_vector(self):
-        """
-        Checks the functionality on a 1x1000 vector
-        Should pass
-        :return:
-        """
-        calculated_results = rbm.argmaxs(self.vector_1000)
-        actual_results = np.argmax(self.vector_1000)
-        # Move to numpy array, although tensorflow might do this automagically.
-        if type(calculated_results) is rbm.tf.Tensor:
-            calculated_results = calculated_results.numpy()
-        assert_almost_equal(calculated_results, actual_results,
-                            err_msg="[ArgMaxs] Calculated results are not equal to actual results to 7 decimal places.")
 
     def test_two_matrix(self):
         """
@@ -315,7 +282,10 @@ class ArgMaxsTests(unittest.TestCase):
         :return:
         """
         calculated_results = rbm.argmaxs(self.matrix_2)
-        actual_results = np.argmax(self.matrix_2)
+        actual_results = np.zeros(self.matrix_2.shape)
+        idxs = np.argmax(self.matrix_2, axis=1)
+        rows = np.arange(0, len(idxs))
+        actual_results[rows, idxs]=1
         # Move to numpy array, although tensorflow might do this automagically.
         if type(calculated_results) is rbm.tf.Tensor:
             calculated_results = calculated_results.numpy()
@@ -329,39 +299,142 @@ class ArgMaxsTests(unittest.TestCase):
         :return:
         """
         calculated_results = rbm.argmaxs(self.matrix_1000)
-        actual_results = np.argmax(self.matrix_1000)
+        actual_results = np.zeros(self.matrix_1000.shape)
+        idxs = np.argmax(self.matrix_1000, axis=1)
+        rows = np.arange(0, len(idxs))
+        actual_results[rows, idxs]=1
         # Move to numpy array, although tensorflow might do this automagically.
         if type(calculated_results) is rbm.tf.Tensor:
             calculated_results = calculated_results.numpy()
         assert_almost_equal(calculated_results, actual_results,
                             err_msg="[ArgMaxs] Calculated results are not equal to actual results to 7 decimal places.")
 
-    def test_two_three_dimensional(self):
+
+class AddBiasTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.matrix_2 = np.array([[0.1, 0.2],[0.5, 0.4]])
+        self.matrix_1000 = np.random.uniform(0, 1, (1000,1000))
+
+    def test_two_matrix(self):
         """
         Checks the functionality on a 2x2 vector
         Should pass
         :return:
         """
-        calculated_results = rbm.argmaxs(self.third_2)
-        actual_results = np.argmax(self.third_2)
+        calculated_results = rbm.addBias(self.matrix_2)
+        actual_results = np.hstack((self.matrix_2, np.ones((self.matrix_2.shape[0],1))))
         # Move to numpy array, although tensorflow might do this automagically.
-        if type(calculated_results) is rbm.tf.Tensor:
+        if type(calculated_results) is tf.Tensor:
             calculated_results = calculated_results.numpy()
         assert_almost_equal(calculated_results, actual_results,
                             err_msg="[ArgMaxs] Calculated results are not equal to actual results to 7 decimal places.")
 
-    def test_thousand_three_dimensional(self):
+    def test_thousand_matrix(self):
         """
-        Checks the functionality on a 1000x2 vector
+        Checks the functionality on a 2x2 vector
         Should pass
         :return:
         """
-        calculated_results = rbm.argmaxs(self.third_1000)
-        actual_results = np.argmax(self.third_1000)
+        calculated_results = rbm.addBias(self.matrix_1000)
+        actual_results = np.hstack((self.matrix_1000, np.ones((self.matrix_1000.shape[0],1))))
         # Move to numpy array, although tensorflow might do this automagically.
-        if type(calculated_results) is rbm.tf.Tensor:
+        if type(calculated_results) is tf.Tensor:
             calculated_results = calculated_results.numpy()
         assert_almost_equal(calculated_results, actual_results,
                             err_msg="[ArgMaxs] Calculated results are not equal to actual results to 7 decimal places.")
 
 
+class StripBiasTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.matrix_2 = np.array([[0.1, 0.2],[0.5, 0.4],[1.,1.]])
+        self.matrix_1000 = np.hstack((np.random.uniform(0, 1, (1000,1000)), np.ones((1000,1))))
+
+    def test_two_matrix(self):
+        """
+        Checks the functionality on a 2x2 vector
+        Should pass
+        :return:
+        """
+        calculated_results = rbm.stripBias(self.matrix_2)
+        actual_results = self.matrix_2[:, 0:-1]
+        # Move to numpy array, although tensorflow might do this automagically.
+        if type(calculated_results) is tf.Tensor:
+            calculated_results = calculated_results.numpy()
+        assert_almost_equal(calculated_results, actual_results,
+                            err_msg="[ArgMaxs] Calculated results are not equal to actual results to 7 decimal places.")
+
+    def test_thousand_matrix(self):
+        """
+        Checks the functionality on a 2x2 vector
+        Should pass
+        :return:
+        """
+        calculated_results = rbm.stripBias(self.matrix_1000)
+        actual_results = self.matrix_1000[:, 0:-1]
+        # Move to numpy array, although tensorflow might do this automagically.
+        if type(calculated_results) is tf.Tensor:
+            calculated_results = calculated_results.numpy()
+        assert_almost_equal(calculated_results, actual_results,
+                            err_msg="[ArgMaxs] Calculated results are not equal to actual results to 7 decimal places.")
+
+
+class TrainPriorBiasTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.hids_rand_vector = np.random.uniform(0, 1, (1000,1))
+        self.hids_deter_vector = np.array([[0,0,0.1,0.2,0.3,0.4,0.6,0.7,1,0.9]])
+        self.hids_deter_matrix = np.array([[0,0,0.1,0.2,0.3],[0.4,0.6,0.7,1,0.9]])
+        self.hids_rand_matrix = np.random.uniform(0, 1, (1000,1000))
+
+    def test_retain_shape(self):
+        calculated_resultV = rbm.trainPriorBias(self.hids_deter_vector)
+        if type(calculated_resultV) is tf.Tensor:
+            calculated_resultV = calculated_resultV.numpy()
+        assert_array_equal(calculated_resultV.shape, (11))
+        calculated_resultM = rbm.trainPriorBias(self.hids_rand_matrix)
+        if type(calculated_resultM) is tf.Tensor:
+            calculated_resultM = calculated_resultM.numpy()
+        assert_array_equal(calculated_resultM.shape, (1001))
+
+    def test_no_inf(self):
+        calculated_resultV = rbm.trainPriorBias(self.hids_deter_vector)
+        if type(calculated_resultV) is not np.ndarray:
+            calculated_resultV = calculated_resultV.numpy()
+        self.assertFalse(np.isinf(calculated_resultV.any()))
+        calculated_resultM = rbm.trainPriorBias(self.hids_rand_matrix)
+        if type(calculated_resultM) is not np.ndarray:
+            calculated_resultM = calculated_resultM.numpy()
+        self.assertFalse(np.isinf(calculated_resultM.any()))
+
+    def test_no_nan(self):
+        calculated_resultV = rbm.trainPriorBias(self.hids_deter_vector)
+        if type(calculated_resultV) is not np.ndarray:
+            calculated_resultV = calculated_resultV.numpy()
+        self.assertFalse(np.isnan(calculated_resultV.any()))
+        calculated_resultM = rbm.trainPriorBias(self.hids_rand_matrix)
+        if type(calculated_resultM) is not np.ndarray:
+            calculated_resultM = calculated_resultM.numpy()
+        self.assertFalse(np.isnan(calculated_resultM.any()))
+
+
+class TrainWTests(unittest.TestCase):
+    """
+
+    """
+
+
+test_cases = [
+    BoltzmannProbsTests(),
+    HardThresholdTests(),
+    ArgMaxsTests(),
+    AddBiasTests(),
+    StripBiasTests(),
+    TrainPriorBiasTests(),
+    TrainWTests()
+    ]
+
+rbm_suite = unittest.TestSuite(test_cases)
+
+if __name__ == '__main__':
+    runner = unittest.TextTestRunner()
+    res = runner.run(test=rbm_suite)
+    print(res)

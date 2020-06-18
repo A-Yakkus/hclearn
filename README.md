@@ -20,3 +20,5 @@ cffun.py : More functions, probably from Charles Fox (hence CFfun).
 
 		invsig(x) : takes neg log of 1/x - 1. Squashes x into the range 0:1, with infinitely large outputs near those values. (Try inputing -log((1/x)-1)) into google.
 
+
+
