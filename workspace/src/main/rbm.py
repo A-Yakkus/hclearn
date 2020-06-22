@@ -92,9 +92,7 @@ def hardThreshold(xs):
     return r
 
 def addBias(xs):
-    T=xs.shape[0]
-    out = np.hstack((xs,np.ones((T,1))))
-    return out
+    return tf.concat((xs, tf.ones((xs.shape[0], 1))), axis=1).numpy()
 
 def stripBias(xs):
     return xs[:, 0:-1]
