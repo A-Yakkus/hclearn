@@ -110,8 +110,8 @@ if __name__ == '__main__':
     #print(plt.rcParams.keys())
     col = "tottime"
     label_col = "filename:lineno(function)"
-    num_items = 16
-    data = pd.read_csv("learnCPU.csv")
+    num_items = 9
+    data = pd.read_csv("_2020_06_22_21_23_38/profile_csv.csv")
     result = get_set_of_items(data, num_items, col)
 
     display_figure(1, num_items, col, label_col, result[0])
