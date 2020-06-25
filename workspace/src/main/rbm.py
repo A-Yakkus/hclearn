@@ -82,14 +82,12 @@ def argmaxs(xs):
     return r
 
 def hardThreshold(xs):
-    T=xs.shape[0]
-    r=np.zeros(xs.shape)
-    for t in range(0,T):
-        r[t,:]= (xs[t,:]>0.5)
-    return r
+    return tf.cast(xs>0.5, tf.float32).numpy()
 
 def addBias(xs):
-    return tf.concat((xs, tf.ones((xs.shape[0], 1))), axis=1).numpy()
+    T=xs.shape[0]
+    out = np.hstack((xs,np.ones((T,1))))
+    return out
 
 def stripBias(xs):
     return xs[:, 0:-1]

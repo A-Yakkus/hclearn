@@ -124,12 +124,12 @@ def learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b
                 #WAKE
 
                 p_b  = boltzmannProbs(WB, np.array([1.0]))
-                p_s  = boltzmannProbs(WS,tf.convert_to_tensor(s, dtype=tf.double))
+                p_s  = boltzmannProbs(WS,s)
                 p = p_b.copy()
                 p=fuse(p, p_s)
 
                 if not b_fakeSub:
-                    p_o  = boltzmannProbs(tf.convert_to_tensor(WO, dtype=tf.double),tf.convert_to_tensor(o, dtype=tf.double))
+                    p_o  = boltzmannProbs(WO,o)
                     p_r  = boltzmannProbs(WR,hids_prev)
                     p=fuse(p, p_o)
                     p=fuse(p, p_r)
