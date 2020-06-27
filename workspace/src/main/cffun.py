@@ -3,6 +3,7 @@ import numpy as np
 import pdb
 from pylab import *
 import random
+import tensorflow as tf
 
 
 def imagesc(img):
@@ -40,7 +41,7 @@ def sig(x):
     return 1.0/(1.0 + np.exp(-x))
 
 def invsig(x):
-    return -np.log((1.0/x)-1)
+    return -tf.math.log((1.0/x)-1)
 
 
 
