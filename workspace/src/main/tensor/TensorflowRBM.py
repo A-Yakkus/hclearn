@@ -44,7 +44,8 @@ def stripBias(xs):
 def trainPriorBias(hids):
     p_null_row = tf.math.reduce_mean(addBias(hids), axis=0)
     idx_0 = tf.where(p_null_row==0)
+    idx_1 = tf.where(p_null_row==1)
     p_null_row=tf.tensor_scatter_nd_add(p_null_row, idx_0, tf.ones(idx_0.shape[0], dtype=tf.float32)*0.00000000123666123666)
-    p_null_row=tf.tensor_scatter_nd_add(p_null_row, idx_0, tf.ones(idx_0.shape[0], dtype=tf.float32)*0.999999999123666123666)
+    p_null_row=tf.tensor_scatter_nd_add(p_null_row, idx_1, tf.ones(idx_0.shape[0], dtype=tf.float32)*0.999999999123666123666)
     b_null = cffun.invsig(p_null_row)
     return b_null
