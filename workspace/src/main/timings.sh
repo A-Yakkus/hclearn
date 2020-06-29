@@ -7,3 +7,6 @@ do
 	/usr/bin/time -va --output=$fname python3 go.py
 done
 # cat RunTimer.log | grep "wall clock" | tr "walckotimepsdEh()" "\b"| tr ":", "," >> timeData.csv
+
+
+

@@ -24,7 +24,7 @@ def trainPriorBias(hids):      # SEEMS TO CONCATENATE AND NORMALISE THE HIDDEN U
     p_null_row[idx]=0.00000000123666123666
     idx=where(p_null_row==1)
     p_null_row[idx]=0.999999999123666123666
-    b_null = invsig(p_null_row)   
+    b_null = invsig(p_null_row)
     return b_null
 
 def trainW(obs, hids, WB, N_epochs, alpha):    #training observation weights
