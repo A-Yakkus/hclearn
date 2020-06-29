@@ -14,4 +14,5 @@ def lag(M, n):
     cat = tf.concat((tiled, M), axis=0)
     return cat[:-n]
 
-
+def outer(a, b):
+    return tf.reshape(a,[-1])[...,None]*tf.reshape(b,[-1])[None,...]

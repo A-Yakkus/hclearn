@@ -97,3 +97,6 @@ def cf_beta(N,k):
     mu = alpha/(alpha+beta)
     sigma = np.sqrt( (alpha*beta)/( (alpha+beta)**2 * (alpha+beta+1) ) )
     return (mu,sigma)
+
+def outer(a,b):
+    return np.outer(a,b)
