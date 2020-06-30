@@ -41,7 +41,7 @@ def sig(x):
     return 1.0/(1.0 + np.exp(-x))
 
 def invsig(x):
-    return -tf.math.log((1.0/x)-1)
+    return -np.log((1.0/x)-1)
 
 
 
