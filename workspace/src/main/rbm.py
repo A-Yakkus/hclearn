@@ -59,7 +59,7 @@ def trainW(obs, hids, WB, N_epochs, alpha):    #training observation weights
             px  = fuse(b, boltzmannProbs(WO,o))          #probs for x next
 
             xs = (px > np.random.random(px.shape)).astype('d')    #sleep sample (at temp=1)
-            po = boltzmannProbs(WO.transpose(), xs) 
+            po = boltzmannProbs(tf.transpose(WO), xs)
             os = (po > np.random.random(po.shape)).astype('d')    #sleep sample (at temp=1)
 
             C = cffun.outer(xs,os)
@@ -67,7 +67,7 @@ def trainW(obs, hids, WB, N_epochs, alpha):    #training observation weights
             WO -= alpha*C
 
             if (t%100)==0:
-                obs_hat = hardThreshold(boltzmannProbs(WO.transpose(), hids.transpose()).transpose())
+                obs_hat = hardThreshold(boltzmannProbs(tf.transpose(WO), hids.transpose()).transpose())
                 e = sum((obs_hat[t-100:t,0:-2] - obs[t-100:t,0:-2])**2)/100    #implicit sums over both axes; includes making bias=1 (unnecessary)
                 #print (t,e)
 

@@ -153,10 +153,10 @@ def learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b
                 #retain the hid sample from the wake step -- draw samples from obs, then hid again, CD style.
 
                 if not b_fakeSub:
-                    po = boltzmannProbs(WO.transpose(), hids) 
+                    po = boltzmannProbs(tf.transpose(WO), hids)
                     o = (po > np.random.random(po.shape)).astype('d') #sleep sample (at temp=1)
 
-                ps = boltzmannProbs(WS.transpose(), hids) 
+                ps = boltzmannProbs(tf.transpose(WS), hids)
                 s = (ps > np.random.random(ps.shape)).astype('d')    #sleep sample (at temp=1)
 
                 p_b  = boltzmannProbs(WB, np.array([1.0]))
