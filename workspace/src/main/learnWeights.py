@@ -5,6 +5,7 @@ import numpy as np
 from rbm import *
 import DGStateAlan as DGStateAlan
 import tensorflow as tf
+import cffun
 
 pathing = "../data/"
 
@@ -136,14 +137,14 @@ def learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b
 
                 hids = (p > np.random.random(p.shape)).astype('d')    #sample, T=1
 
-                CS = np.outer(hids,s)
-                CB = np.outer(hids,b)
+                CS = cffun.outer(hids,s)
+                CB = cffun.outer(hids,b)
                 WS += alpha*CS
                 WB += alpha*CB
 
                 if not b_fakeSub:
-                    CO = np.outer(hids,o)
-                    CR = np.outer(hids,hids_prev)
+                    CO = cffun.outer(hids,o)
+                    CR = cffun.outer(hids,hids_prev)
                     WR += alpha*CR
                     WO += alpha*CO
 
@@ -172,14 +173,14 @@ def learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b
                 #resample hids (needed to antii learn recs!)
                 hids = (p > np.random.random(p.shape)).astype('d')    #sample, T=1
 
-                CS = np.outer(hids,s)
-                CB = np.outer(hids,b)
+                CS = cffun.outer(hids,s)
+                CB = cffun.outer(hids,b)
                 WS -= alpha*CS
                 WB -= alpha*CB
 
                 if not b_fakeSub:
-                    CO = np.outer(hids,o)
-                    CR = np.outer(hids,hids_prev)
+                    CO = cffun.outer(hids,o)
+                    CR = cffun.outer(hids,hids_prev)
                     WR -= alpha*CR
                     WO -= alpha*CO
 

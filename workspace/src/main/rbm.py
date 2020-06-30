@@ -1,6 +1,7 @@
 import numpy as np
 from paths import *
 import tensorflow as tf
+import cffun
 print("Go me")
 ##### CAPS ARE NOTES BY M.EVANS. Notes are now in README.md or the hclearn notebook
 
@@ -18,12 +19,12 @@ def boltzmannProbs(W, x):      # RETURNS THE PROBABILITY OF A NODE BEING ON
     return P_on
 
 
-def trainPriorBias(hids):
-    p_null_row = tf.math.reduce_mean(addBias(hids), axis=0)
-    idx_0 = tf.where(p_null_row==0)
-    idx_1 = tf.where(p_null_row==1)
-    p_null_row=tf.tensor_scatter_nd_add(p_null_row, idx_0, tf.ones(idx_0.shape[0], dtype=tf.double)*0.00000000123666123666)
-    p_null_row=tf.tensor_scatter_nd_add(p_null_row, idx_1, tf.ones(idx_1.shape[0], dtype=tf.double)*0.999999999123666123666)
+def trainPriorBias(hids):      # SEEMS TO CONCATENATE AND NORMALISE THE HIDDEN UNIT VALUES
+    p_null_row = mean(addBias(hids),0)   #include predicting 1, as a checksum!
+    idx=where(p_null_row==0)                  #tweak to avoid Inf, Nans etc
+    p_null_row[idx]=0.00000000123666123666
+    idx=where(p_null_row==1)
+    p_null_row[idx]=0.999999999123666123666
     b_null = invsig(p_null_row)
     return b_null
 
@@ -49,7 +50,7 @@ def trainW(obs, hids, WB, N_epochs, alpha):    #training observation weights
 
             #WAKE
             xw = hids[t,:]
-            C = np.outer(xw,o)
+            C = cffun.outer(xw,o)
             WO += alpha*C
           
 
@@ -61,7 +62,7 @@ def trainW(obs, hids, WB, N_epochs, alpha):    #training observation weights
             po = boltzmannProbs(WO.transpose(), xs) 
             os = (po > np.random.random(po.shape)).astype('d')    #sleep sample (at temp=1)
 
-            C = np.outer(xs,os)
+            C = cffun.outer(xs,os)
 
             WO -= alpha*C
 

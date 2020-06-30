@@ -99,5 +99,5 @@ def cf_beta(N,k):
     sigma = np.sqrt( (alpha*beta)/( (alpha+beta)**2 * (alpha+beta+1) ) )
     return (mu,sigma)
 
-def outer(a,b):
-    return np.outer(a,b)
+def outer(a, b):
+    return tf.reshape(a,[-1])[...,None]*tf.reshape(b,[-1])[None,...]
