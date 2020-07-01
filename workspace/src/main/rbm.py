@@ -42,28 +42,28 @@ def trainW(obs, hids, WB, N_epochs, alpha):    #training observation weights
     N_CA3 = hids.shape[1]
     N_obs = obs.shape[1]
 
-    WO = np.random.rand(N_CA3,N_obs)-0.5
+    WO = tf.random.uniform((N_CA3,N_obs), dtype=tf.double)-0.5
     
     for epoch in range(0,N_epochs):
        ## e=0   #error
 
         for t in range(0,T):
 
-            o = obs[t,:]
+            o = tf.convert_to_tensor(obs[t,:], tf.double)
 
             #WAKE
             xw = hids[t,:]
-            C = cffun.outer(xw,o)
+            C = tf.cast(cffun.outer(xw, o),tf.double)
             WO += alpha*C
           
 
             #SLEEP  -- as 1-step CD unlearning
-            b   = boltzmannProbs(WB, 1.0)
-            px  = fuse(b, boltzmannProbs(WO,o))          #probs for x next
+            b   = (boltzmannProbs(WB, 1))
+            px  = fuse(b, boltzmannProbs(WO, tf.cast(o, tf.double)))          #probs for x next
 
-            xs = tf.cast(px > np.random.random(px.shape), tf.double)#.astype('d')    #sleep sample (at temp=1)
+            xs = tf.cast(px > tf.random.uniform(px.shape, dtype=tf.double), tf.double)#.astype('d')    #sleep sample (at temp=1)
             po = boltzmannProbs(tf.transpose(WO), xs)
-            os = tf.cast(po > np.random.random(po.shape), tf.double)#.astype('d')    #sleep sample (at temp=1)
+            os = tf.cast(po > tf.random.uniform(po.shape, dtype=tf.double), tf.double)#.astype('d')    #sleep sample (at temp=1)
 
             C = cffun.outer(xs,os)
 
