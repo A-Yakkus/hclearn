@@ -126,7 +126,7 @@ def learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b
 
                 p_b  = boltzmannProbs(WB, np.array([1.0]))
                 p_s  = boltzmannProbs(WS,s)
-                p = p_b.copy()
+                p = tf.identity(p_b)#.copy()
                 p=fuse(p, p_s)
 
                 if not b_fakeSub:
@@ -135,9 +135,8 @@ def learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b
                     p=fuse(p, p_o)
                     p=fuse(p, p_r)
 
-                hids = (p > np.random.random(p.shape)).astype('d')    #sample, T=1
-
-                CS = cffun.outer(hids,s)
+                hids = tf.cast(p > np.random.random(p.shape), tf.double)#.astype('d')    #sample, T=1
+                CS = cffun.outer(hids,tf.convert_to_tensor(s))
                 CB = cffun.outer(hids,b)
                 WS += alpha*CS
                 WB += alpha*CB
@@ -154,14 +153,14 @@ def learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b
 
                 if not b_fakeSub:
                     po = boltzmannProbs(tf.transpose(WO), hids)
-                    o = (po > np.random.random(po.shape)).astype('d') #sleep sample (at temp=1)
+                    o = tf.cast(po > np.random.random(po.shape), tf.double)#.astype('d') #sleep sample (at temp=1)
 
                 ps = boltzmannProbs(tf.transpose(WS), hids)
-                s = (ps > np.random.random(ps.shape)).astype('d')    #sleep sample (at temp=1)
+                s = tf.cast(ps > np.random.random(ps.shape), tf.double)#.astype('d')    #sleep sample (at temp=1)
 
                 p_b  = boltzmannProbs(WB, np.array([1.0]))
                 p_s  = boltzmannProbs(WS,s)          
-                p = p_b.copy()
+                p = tf.identity(p_b)#.copy()
                 p=fuse(p, p_s)
 
                 if not b_fakeSub:
@@ -171,7 +170,7 @@ def learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b
                     p=fuse(p, p_r)
 
                 #resample hids (needed to antii learn recs!)
-                hids = (p > np.random.random(p.shape)).astype('d')    #sample, T=1
+                hids = tf.cast(p > np.random.random(p.shape), tf.double)#.astype('d')    #sample, T=1
 
                 CS = cffun.outer(hids,s)
                 CB = cffun.outer(hids,b)

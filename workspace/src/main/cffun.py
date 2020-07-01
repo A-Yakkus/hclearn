@@ -100,4 +100,5 @@ def cf_beta(N,k):
     return (mu,sigma)
 
 def outer(a, b):
+
     return tf.reshape(a,[-1])[...,None]*tf.reshape(b,[-1])[None,...]

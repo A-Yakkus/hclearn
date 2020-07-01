@@ -9,13 +9,16 @@ print("Go me")
 
 
 def boltzmannProbs(W, x):      # RETURNS THE PROBABILITY OF A NODE BEING ON
-    E_on  = -np.dot(W,x)       #penalty is the negative of the reward (just to make it look like energy)
+    if type(x) is int or type(x) is float or x.shape is ():
+        mult = tf.multiply(W, x)
+    else:
+        mult = tf.tensordot(W, x, 1)
+    E_on  = tf.negative(mult)       #penalty is the negative of the reward (just to make it look like energy)
     E_off = 0.0*E_on
-
-    Q_on = np.exp(-E_on)       #as energy is negated, we have e^(reward)
-    Q_off = np.exp(-E_off)
-
-    P_on = Q_on / (Q_on + Q_off)
+    Q_on = tf.math.exp(-E_on)       #as energy is negated, we have e^(reward)
+    Q_off = tf.math.exp(-E_off)
+    P_on = tf.math.divide(Q_on, tf.math.add(Q_on, Q_off))
+    # P_on = Q_on / (Q_on + Q_off)
     return P_on
 
 
@@ -58,16 +61,16 @@ def trainW(obs, hids, WB, N_epochs, alpha):    #training observation weights
             b   = boltzmannProbs(WB, 1.0)
             px  = fuse(b, boltzmannProbs(WO,o))          #probs for x next
 
-            xs = (px > np.random.random(px.shape)).astype('d')    #sleep sample (at temp=1)
+            xs = tf.cast(px > np.random.random(px.shape), tf.double)#.astype('d')    #sleep sample (at temp=1)
             po = boltzmannProbs(tf.transpose(WO), xs)
-            os = (po > np.random.random(po.shape)).astype('d')    #sleep sample (at temp=1)
+            os = tf.cast(po > np.random.random(po.shape), tf.double)#.astype('d')    #sleep sample (at temp=1)
 
             C = cffun.outer(xs,os)
 
             WO -= alpha*C
 
             if (t%100)==0:
-                obs_hat = hardThreshold(boltzmannProbs(tf.transpose(WO), hids.transpose()).transpose())
+                obs_hat = hardThreshold(boltzmannProbs(tf.transpose(WO), hids.transpose()).numpy().transpose())
                 e = sum((obs_hat[t-100:t,0:-2] - obs[t-100:t,0:-2])**2)/100    #implicit sums over both axes; includes making bias=1 (unnecessary)
                 #print (t,e)
 
