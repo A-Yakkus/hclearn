@@ -8,6 +8,7 @@ import tensorflow as tf
 import cffun
 
 pathing = "../data/"
+#pathing = "../src/data/"
 
 def err(ps, hids):
     return sum( (ps-hids)**2 ) / hids.shape[0]
@@ -80,7 +81,8 @@ def learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b
         WO = np.load(pathing+'WO.npy')
         WS = np.load(pathing+'WS.npy')
         WB = np.load(pathing+'WB.npy')
-        WB=WB.reshape((86,1))
+        WB = WB[...,tf.newaxis]
+        #WB=WB.reshape((,1))
         #No longer need the above lines as they are a hack and the wrong size
 
         ##these are all to be learned, so overwrite them with rands
@@ -125,13 +127,13 @@ def learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b
                 #WAKE
 
                 p_b  = boltzmannProbs(WB, np.array([1.0]))
-                p_s  = boltzmannProbs(WS,s)
+                p_s  = boltzmannProbs(WS,s, 1)
                 p = tf.identity(p_b)#.copy()
                 p=fuse(p, p_s)
 
                 if not b_fakeSub:
-                    p_o  = boltzmannProbs(WO,o)
-                    p_r  = boltzmannProbs(WR,hids_prev)
+                    p_o  = boltzmannProbs(WO,o, 1)
+                    p_r  = boltzmannProbs(WR,hids_prev, 1)
                     p=fuse(p, p_o)
                     p=fuse(p, p_r)
 
@@ -140,38 +142,36 @@ def learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b
                 CB = cffun.outer(hids,b)
                 WS += alpha*CS
                 WB += alpha*CB
-
                 if not b_fakeSub:
                     CO = cffun.outer(hids,o)
                     CR = cffun.outer(hids,hids_prev)
                     WR += alpha*CR
                     WO += alpha*CO
-
                 #SLEEP
 
                 #retain the hid sample from the wake step -- draw samples from obs, then hid again, CD style.
 
                 if not b_fakeSub:
-                    po = boltzmannProbs(tf.transpose(WO), hids)
+                    po = boltzmannProbs(tf.transpose(WO), hids, 1)
                     o = tf.cast(po > tf.random.uniform(po.shape, dtype=tf.double), tf.double)#.astype('d') #sleep sample (at temp=1)
+                    print("162", po.shape, o.shape)
 
-                ps = boltzmannProbs(tf.transpose(WS), hids)
+                ps = boltzmannProbs(tf.transpose(WS), hids, 1)
                 s = tf.cast(ps > tf.random.uniform(ps.shape, dtype=tf.double), tf.double)#.astype('d')    #sleep sample (at temp=1)
 
                 p_b  = boltzmannProbs(WB, np.array([1.0]))
-                p_s  = boltzmannProbs(WS,s)          
+                p_s  = boltzmannProbs(WS,s, 1)
                 p = tf.identity(p_b)#.copy()
                 p=fuse(p, p_s)
 
                 if not b_fakeSub:
-                    p_o  = boltzmannProbs(WO,o)          
-                    p_r  = boltzmannProbs(WR,hids_prev)
+                    p_o  = boltzmannProbs(WO, o, 1)
+                    p_r  = boltzmannProbs(WR,hids_prev, 1)
                     p=fuse(p, p_o)
                     p=fuse(p, p_r)
 
                 #resample hids (needed to antii learn recs!)
                 hids = tf.cast(p > tf.random.uniform(p.shape, dtype=tf.double), tf.double)#.astype('d')    #sample, T=1
-
                 CS = cffun.outer(hids,s)
                 CB = cffun.outer(hids,b)
                 WS -= alpha*CS
@@ -189,7 +189,6 @@ def learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b
                 err_epoch += e
 
            # print('epoch:'+str(epoch)+' err:'+str(err_epoch))
-
 
         np.save(pathing+'tWR',WR)
         np.save(pathing+'tWS',WS)

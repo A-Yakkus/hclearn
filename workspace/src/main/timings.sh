@@ -1,7 +1,7 @@
 #!/bin/bash
 echo ${BASH_VERSION}
-fname=RunTimer.log
-for I in {1..50}
+fname=RunTimer.5000_neurons.log
+for I in {1..10}
 do
 	echo "Iteration "$I":" >> $fname
 	/usr/bin/time -va --output=$fname python3 go.py

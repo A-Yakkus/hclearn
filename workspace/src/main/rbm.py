@@ -8,11 +8,11 @@ print("Go me")
 ############################### hintonian stuff starts here
 
 
-def boltzmannProbs(W, x):      # RETURNS THE PROBABILITY OF A NODE BEING ON
-    if type(x) is int or type(x) is float or x.shape is ():
-        mult = tf.multiply(W, x)
-    else:
-        mult = tf.tensordot(W, x, 1)
+def boltzmannProbs(W, x, axis=0):      # RETURNS THE PROBABILITY OF A NODE BEING ON
+    #if type(x) is int or type(x) is float or x.shape is ():
+    #mult = tf.multiply(W, x)
+    #else:
+    mult = tf.squeeze(tf.tensordot(W, x, axis))
     E_on  = tf.negative(mult)       #penalty is the negative of the reward (just to make it look like energy)
     E_off = 0.0*E_on
     Q_on = tf.math.exp(-E_on)       #as energy is negated, we have e^(reward)
@@ -37,7 +37,7 @@ def trainW(obs, hids, WB, N_epochs, alpha):    #training observation weights
     hids = np.hstack((hids, np.ones((T,1)))) #add (redundant, target) bias
     obs  = np.hstack((obs,  np.ones((T,1)))) #add bias AND global bias [no learning in GB, only in local bias]
 
-    print ("training observations")
+    #print ("training observations")
 
     N_CA3 = hids.shape[1]
     N_obs = obs.shape[1]
@@ -58,23 +58,22 @@ def trainW(obs, hids, WB, N_epochs, alpha):    #training observation weights
           
 
             #SLEEP  -- as 1-step CD unlearning
-            b   = (boltzmannProbs(WB, 1))
-            px  = fuse(b, boltzmannProbs(WO, tf.cast(o, tf.double)))          #probs for x next
-
+            b   = (boltzmannProbs(WB, tf.convert_to_tensor([[1.]], dtype=tf.double)))
+            bo = boltzmannProbs(WO, tf.cast(o, tf.double), 1)
+            px  = fuse(b, bo)          #probs for x next
             xs = tf.cast(px > tf.random.uniform(px.shape, dtype=tf.double), tf.double)#.astype('d')    #sleep sample (at temp=1)
-            po = boltzmannProbs(tf.transpose(WO), xs)
+            po = boltzmannProbs(tf.transpose(WO), xs, 1)
             os = tf.cast(po > tf.random.uniform(po.shape, dtype=tf.double), tf.double)#.astype('d')    #sleep sample (at temp=1)
-
             C = cffun.outer(xs,os)
 
             WO -= alpha*C
 
             if (t%100)==0:
-                obs_hat = hardThreshold(boltzmannProbs(tf.transpose(WO), hids.transpose()).numpy().transpose())
+                obs_hat = hardThreshold(boltzmannProbs(tf.transpose(WO), hids.transpose(), 1).numpy().transpose())
                 e = sum((obs_hat[t-100:t,0:-2] - obs[t-100:t,0:-2])**2)/100    #implicit sums over both axes; includes making bias=1 (unnecessary)
                 #print (t,e)
 
-        print (epoch, (e+0.0)/T)   #test if it reduces -- pritns average number that were wrong (get down to 4)
+        #print (epoch, (e+0.0)/T)   #test if it reduces -- pritns average number that were wrong (get down to 4)
     return WO
 
 def argmaxs(xs):

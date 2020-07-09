@@ -8,7 +8,7 @@ class CA3State:
         self.place_hd=place_hd
         self.light=light
         self.light_hd=light_hd  #this is the light STATE not lightAhead
-        #self.biases = np.ones((10, 1)) # Uncomment me to artificially increase size of CA3/rbm.
+        #self.biases = np.ones((5000, 1)) # Uncomment me to artificially increase size of CA3/rbm.
         #self.surfs=surfs #ALAN not needed because we are looking at ideal?
 
     def toVector(self):
