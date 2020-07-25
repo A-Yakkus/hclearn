@@ -1,3 +1,6 @@
+import time
+timeStart = time.time()
+
 import matplotlib
 #matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -11,6 +14,7 @@ import plotPlaceCells
 #from os import sys
 import learnWeights
 import sys
+import tensorflow as tf
 
 pathing = "../data/"
 
@@ -78,12 +82,19 @@ path = Paths(dictNext, N_mazeSize, T)
 if b_learnWeights:
     print ("TRAINING...")
     # ALAN: Careful this won't exist if b_learnDGWeights is not true (I.e. we're not using SURF features)
+#    writer = tf.summary.create_file_writer("./tmp/profile_87_3/")
+#    with writer.as_default():
+#        tf.summary.trace_on(True, True)
     dghelper = learnWeights.learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b_learnIdeal=True, b_learnTrained=True, b_learnDGWeights=b_useNewDG, learningRate=learningRate)
+
+#        writer.flush()
     #dghelper = learnWeights.learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b_learnIdeal=True, b_learnTrained=False, b_learnDGWeights=False, learningRate=learningRate)
     #dghelper = learnWeights.learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b_learnIdeal=False, b_learnTrained=True, b_learnDGWeights=False, learningRate=learningRate)
     #dghelper = learnWeights.learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b_learnIdeal=False, b_learnTrained=False, b_learnDGWeights=True, learningRate=learningRate)
 else:
     dghelper=None
+timeEnd = time.time()
+print("[GO]Time taken:{0}, start={1}, end={2}".format(timeEnd-timeStart, timeStart, timeEnd)) 
 
 """
 ## NB loading trained versions from genuine wake sleep

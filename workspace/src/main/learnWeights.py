@@ -17,7 +17,7 @@ def err(ps, hids):
 def fuse2(p1,p2):
     return 1.0 / (1.0 +   ((1-p1)*(1-p2)/(p1 * p2)  ))
 
-
+#@tf.function
 def learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b_learnIdeal=True, b_learnTrained=False, b_learnDGWeights=True, learningRate=0.01):
     dghelper=None
     #Learn DG weights when you have visual input
@@ -86,10 +86,10 @@ def learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b
         #No longer need the above lines as they are a hack and the wrong size
 
         ##these are all to be learned, so overwrite them with rands
-        WR = 1-2*np.random.random(WR.shape) #Weights recurrent
-        WB = 1-2*np.random.random(WB.shape) #Weights bias
-        WO = 1-2*np.random.random(WO.shape) #Odom sensors
-        WS = 1-2*np.random.random(WS.shape) #Non-odom sensors - INCLUDING SURF - Need to include DG size within it
+        WR = tf.convert_to_tensor(1-2*np.random.random(WR.shape), dtype=tf.float32) #Weights recurrent
+        WB = tf.convert_to_tensor(1-2*np.random.random(WB.shape), dtype=tf.float32) #Weights bias
+        WO = tf.convert_to_tensor(1-2*np.random.random(WO.shape), dtype=tf.float32) #Odom sensors
+        WS = tf.convert_to_tensor(1-2*np.random.random(WS.shape), dtype=tf.float32) #Non-odom sensors - INCLUDING SURF - Need to include DG size within it
         #ALAN Seems like by changing the ecs2vs_so to include the surf features this size has been now modified correctly?
         #Above need resizing to include SURF weights
 
@@ -106,87 +106,88 @@ def learn(path, dictSenses, dictGrids, N_mazeSize, ecs_gnd, dgs_gnd, ca3s_gnd, b
 
         T = odom.shape[0]
 
-        b = np.array([1.0])  #bias
+        b = tf.convert_to_tensor(np.array([1.0]), dtype=tf.float32)  #bias
         alpha = learningRate #0.01 ##0.0001 is stable, starting at perfects; 0.001 diverges.
 
         ### train with proper wake-sleep (no peeking at hid_t, though hid_{t-1} is OK )
-
+        
         #FIXME: TURN BACK TO 1000 or so!
         for epoch in range(0,10):
-            
-            err_epoch = 0  #accumulator
+                err_epoch = 0  #accumulator
 
-            for t in range(0,T):
+                for t in range(0,T):
+                    #print(epoch, t)
+                    b_fakeSub = tf.cast(tf.floor(2*tf.random.uniform(shape=())), tf.float32)  #learn on full data or on hist-indep subset?
 
-                b_fakeSub = tf.cast(tf.floor(2*tf.random.uniform(shape=())), tf.double)  #learn on full data or on hist-indep subset?
+                    hids_prev = tf.convert_to_tensor(hidslag_gnd[t,:], dtype=tf.float32)
+                    s = tf.convert_to_tensor(senses[t,:], dtype=tf.float32)
+                    o = tf.convert_to_tensor(odom[t,:], dtype=tf.float32)
 
-                hids_prev = hidslag_gnd[t,:]
-                s = senses[t,:]
-                o = odom[t,:]
+                    #WAKE
 
-                #WAKE
+                    p_b  = boltzmannProbs(tf.convert_to_tensor(WB, dtype=tf.float32), tf.convert_to_tensor([1.0], dtype=tf.float32))
+                    p_s  = boltzmannProbs(tf.convert_to_tensor(WS, dtype=tf.float32),s, 1)
+                    p = tf.identity(p_b)#.copy()
+                    p=fuse(p, p_s)
 
-                p_b  = boltzmannProbs(WB, np.array([1.0]))
-                p_s  = boltzmannProbs(WS,s, 1)
-                p = tf.identity(p_b)#.copy()
-                p=fuse(p, p_s)
+                    if not b_fakeSub:
+                        p_o  = boltzmannProbs(WO,o, 1)
+                        p_r  = boltzmannProbs(WR,hids_prev, 1)
+                        p=fuse(p, p_o)
+                        p=fuse(p, p_r)
 
-                if not b_fakeSub:
-                    p_o  = boltzmannProbs(WO,o, 1)
-                    p_r  = boltzmannProbs(WR,hids_prev, 1)
-                    p=fuse(p, p_o)
-                    p=fuse(p, p_r)
+                    hids = tf.cast(tf.cast(p, dtype=tf.float32) > tf.random.uniform(p.shape, dtype=tf.float32), tf.float32)#.astype('d')    #sample, T=1
+                    CS = cffun.outer(hids, s)
+                    CB = cffun.outer(hids, b)
+                    WS += alpha*CS
+                    WB += alpha*CB
+                    if not b_fakeSub:
+                        CO = cffun.outer(hids, o)
+                        CR = cffun.outer(hids,hids_prev)
+                        WR += alpha*CR
+                        WO += alpha*CO
+                    #SLEEP
 
-                hids = tf.cast(p > tf.random.uniform(p.shape, dtype=tf.double), tf.double)#.astype('d')    #sample, T=1
-                CS = cffun.outer(hids,tf.convert_to_tensor(s))
-                CB = cffun.outer(hids,b)
-                WS += alpha*CS
-                WB += alpha*CB
-                if not b_fakeSub:
-                    CO = cffun.outer(hids,o)
-                    CR = cffun.outer(hids,hids_prev)
-                    WR += alpha*CR
-                    WO += alpha*CO
-                #SLEEP
+                    #retain the hid sample from the wake step -- draw samples from obs, then hid again, CD style.
 
-                #retain the hid sample from the wake step -- draw samples from obs, then hid again, CD style.
+                    if not b_fakeSub:
+                        po = boltzmannProbs(tf.transpose(WO), hids, 1)
+                        o = tf.cast(po > tf.random.uniform(po.shape, dtype=tf.float32), tf.float32)#.astype('d') #sleep sample (at temp=1)
+                        
 
-                if not b_fakeSub:
-                    po = boltzmannProbs(tf.transpose(WO), hids, 1)
-                    o = tf.cast(po > tf.random.uniform(po.shape, dtype=tf.double), tf.double)#.astype('d') #sleep sample (at temp=1)
-                    print("162", po.shape, o.shape)
+                    ps = boltzmannProbs(tf.transpose(WS), hids, 1)
+                    s = tf.cast(ps > tf.random.uniform(ps.shape, dtype=tf.float32), tf.float32)#.astype('d')    #sleep sample (at temp=1)
 
-                ps = boltzmannProbs(tf.transpose(WS), hids, 1)
-                s = tf.cast(ps > tf.random.uniform(ps.shape, dtype=tf.double), tf.double)#.astype('d')    #sleep sample (at temp=1)
+                    p_b  = boltzmannProbs(WB, tf.convert_to_tensor([1.0],dtype=tf.float32))
+                    p_s  = boltzmannProbs(WS,s, 1)
+                    p = tf.identity(p_b)#.copy()
+                    p=fuse(p, p_s)
 
-                p_b  = boltzmannProbs(WB, np.array([1.0]))
-                p_s  = boltzmannProbs(WS,s, 1)
-                p = tf.identity(p_b)#.copy()
-                p=fuse(p, p_s)
+                    if not b_fakeSub:
+                        p_o  = boltzmannProbs(WO, o, 1)
+                        p_r  = boltzmannProbs(WR, hids_prev, 1)
+                        p=fuse(p, p_o)
+                        p=fuse(p, p_r)
 
-                if not b_fakeSub:
-                    p_o  = boltzmannProbs(WO, o, 1)
-                    p_r  = boltzmannProbs(WR,hids_prev, 1)
-                    p=fuse(p, p_o)
-                    p=fuse(p, p_r)
+                    #resample hids (needed to antii learn recs!)
+                    hids = tf.cast(p > tf.random.uniform(p.shape, dtype=tf.float32), tf.float32)#.astype('d')    #sample, T=1
+                    CS = cffun.outer(hids,s)
+                    CB = cffun.outer(hids,b)
+                    WS -= alpha*CS
+                    WB -= alpha*CB
 
-                #resample hids (needed to antii learn recs!)
-                hids = tf.cast(p > tf.random.uniform(p.shape, dtype=tf.double), tf.double)#.astype('d')    #sample, T=1
-                CS = cffun.outer(hids,s)
-                CB = cffun.outer(hids,b)
-                WS -= alpha*CS
-                WB -= alpha*CB
-
-                if not b_fakeSub:
-                    CO = cffun.outer(hids,o)
-                    CR = cffun.outer(hids,hids_prev)
-                    WR -= alpha*CR
-                    WO -= alpha*CO
+                    if not b_fakeSub:
+                        CO = cffun.outer(hids,o)
+                        CR = cffun.outer(hids,hids_prev)
+                        WR -= alpha*CR
+                        WO -= alpha*CO
 
 
-                #TODO report error rate?
-                e = err( hids, hids_gnd[t,:] )
-                err_epoch += e
+                    #TODO report error rate?
+                    e = err( hids, hids_gnd[t,:] )
+                    err_epoch += e
+#                    tf.summary.trace_export("Profiling", step=t, profiler_outdir="./tmp/mylogs/"+str(epoch))
+
 
            # print('epoch:'+str(epoch)+' err:'+str(err_epoch))
 

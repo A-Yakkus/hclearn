@@ -7,7 +7,7 @@ print("Go me")
 
 ############################### hintonian stuff starts here
 
-
+@tf.function
 def boltzmannProbs(W, x, axis=0):      # RETURNS THE PROBABILITY OF A NODE BEING ON
     #if type(x) is int or type(x) is float or x.shape is ():
     #mult = tf.multiply(W, x)
@@ -42,34 +42,34 @@ def trainW(obs, hids, WB, N_epochs, alpha):    #training observation weights
     N_CA3 = hids.shape[1]
     N_obs = obs.shape[1]
 
-    WO = tf.random.uniform((N_CA3,N_obs), dtype=tf.double)-0.5
+    WO = tf.random.uniform((N_CA3,N_obs), dtype=tf.float32)-0.5
     
     for epoch in range(0,N_epochs):
        ## e=0   #error
 
         for t in range(0,T):
 
-            o = tf.convert_to_tensor(obs[t,:], tf.double)
+            o = tf.convert_to_tensor(obs[t,:], tf.float32)
 
             #WAKE
-            xw = hids[t,:]
-            C = tf.cast(cffun.outer(xw, o),tf.double)
+            xw = tf.convert_to_tensor(hids[t,:], dtype=tf.float32)
+            C = tf.cast(cffun.outer(xw, o),tf.float32)
             WO += alpha*C
           
 
             #SLEEP  -- as 1-step CD unlearning
-            b   = (boltzmannProbs(WB, tf.convert_to_tensor([[1.]], dtype=tf.double)))
-            bo = boltzmannProbs(WO, tf.cast(o, tf.double), 1)
+            b   = (boltzmannProbs(tf.convert_to_tensor(WB, dtype=tf.float32), tf.convert_to_tensor([[1.]], dtype=tf.float32)))
+            bo = boltzmannProbs(tf.convert_to_tensor(WO, dtype=tf.float32), tf.cast(o, tf.float32), 1)
             px  = fuse(b, bo)          #probs for x next
-            xs = tf.cast(px > tf.random.uniform(px.shape, dtype=tf.double), tf.double)#.astype('d')    #sleep sample (at temp=1)
+            xs = tf.cast(px > tf.random.uniform(px.shape, dtype=tf.float32), tf.float32)#.astype('d')    #sleep sample (at temp=1)
             po = boltzmannProbs(tf.transpose(WO), xs, 1)
-            os = tf.cast(po > tf.random.uniform(po.shape, dtype=tf.double), tf.double)#.astype('d')    #sleep sample (at temp=1)
+            os = tf.cast(po > tf.random.uniform(po.shape, dtype=tf.float32), tf.float32)#.astype('d')    #sleep sample (at temp=1)
             C = cffun.outer(xs,os)
 
             WO -= alpha*C
 
             if (t%100)==0:
-                obs_hat = hardThreshold(boltzmannProbs(tf.transpose(WO), hids.transpose(), 1).numpy().transpose())
+                obs_hat = hardThreshold(boltzmannProbs(tf.transpose(WO), tf.transpose(tf.convert_to_tensor(hids,dtype=tf.float32)), 1).numpy().transpose())
                 e = sum((obs_hat[t-100:t,0:-2] - obs[t-100:t,0:-2])**2)/100    #implicit sums over both axes; includes making bias=1 (unnecessary)
                 #print (t,e)
 
